@@ -12,18 +12,20 @@
         matInput
         [disabled]="loading"
         [formControl]='citySearchControl'
-        (keyup.enter)="addCity()"
+        [matAutocomplete]="auto"
       />
-      <mat-icon matSuffix *ngIf="citySearchControl.value"
-                (click)="clearCitySearchControl()" class="clear-btn">close
-      </mat-icon>
+      <mat-icon
+        *ngIf="citySearchControl.value"
+        matSuffix
+        (click)="clearCitySearchControl()"
+        class="clear-btn"
+      >close</mat-icon>
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addCity()">
+        <mat-option *ngFor="let city of searchCityOptions" [value]="city.local_names.en">
+          {{city.local_names.en}} / {{city.country}}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
-
-    <button mat-stroked-button (click)="addCity()" class="add-city-btn"
-            [disabled]="loading || !citySearchControl.value">
-      Add
-      <mat-icon>add</mat-icon>
-    </button>
 
     <mat-form-field appearance="fill">
       <mat-label>Select search mode</mat-label>
@@ -42,11 +44,11 @@
     </ng-container>
 
     <ng-container *ngFor="let column of displayedColumns.slice(1, displayedColumns.length); let i = index">
-      <ng-container [matColumnDef]="column" *ngIf="presetControl.value==='hourly'">
+      <ng-container [matColumnDef]="column" *ngIf="presetControl.value === 'hourly'">
         <mat-header-cell *matHeaderCellDef>{{column | date:"HH:mm"}}</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.hourly[i].temp | temp}}</mat-cell>
       </ng-container>
-      <ng-container [matColumnDef]="column" *ngIf="presetControl.value==='daily'">
+      <ng-container [matColumnDef]="column" *ngIf="presetControl.value === 'daily'">
         <mat-header-cell *matHeaderCellDef>{{column | date:"EEEE"}}</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.daily[i].temp.day | temp}}</mat-cell>
       </ng-container>

@@ -3,7 +3,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Daily, Hourly, Weather} from "./interfaces/weather";
 import {FormControl} from "@angular/forms";
 import {City} from "./interfaces/city";
-import {mergeMap, Subject, takeUntil} from "rxjs";
+import {debounceTime, distinctUntilChanged, filter, map, mergeMap, Subject, takeUntil, tap} from "rxjs";
 import {WeatherService} from "./services/weather/weather.service";
 import {CityService} from "./services/city/city.service";
 
@@ -20,6 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   preset: string[] = ['hourly', 'daily'];
   presetControl: FormControl = new FormControl('hourly');
+  searchCityOptions: City[] = [];
   private cities: City[] = []
   private readonly destroy: Subject<void> = new Subject<void>();
 
@@ -32,8 +33,26 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loading = false;
-    this.citySearchControl.setValue('Moscow')
-    this.addCity()
+    this.citySearchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        tap((_) => this.searchCityOptions = []),
+        filter((value) => value?.length > 2),
+        mergeMap((value: string) => {
+          this.loading = true;
+          return this.cityService.getCities(value);
+        }),
+        filter((cities: City[]) => {
+          this.loading = false;
+          return cities.length > 0;
+        }),
+        map((cities: City[]) => cities.filter((city: City) => (!!city?.local_names?.en))),
+        takeUntil(this.destroy),
+      )
+      .subscribe((cities: City[]): void => {
+        this.searchCityOptions = cities;
+      });
   }
 
   ngOnDestroy(): void {
@@ -42,22 +61,20 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   addCity(): void {
-    const city: string | null = this.citySearchControl.value;
-    if (!city) {
-      return
+    if (this.loading || !this.searchCityOptions.length) {
+      return;
     }
+    const city: City = this.searchCityOptions[0];
     this.loading = true;
-    this.cityService.getCities(city)
+    this.cities.push(city)
+    this.weatherService.getWeather(city, this.presetControl.value)
       .pipe(
-        mergeMap((cities: City[]) => {
-          this.cities.push(cities[0])
-          return this.weatherService.getWeather(cities[0], this.presetControl.value)
-        }),
         takeUntil(this.destroy)
-      ).subscribe((weather: Weather): void => {
-        this.setWeather(weather)
-      }
-    );
+      )
+      .subscribe((weather: Weather): void => {
+          this.setWeather(weather)
+        }
+      );
   }
 
   clearCitySearchControl(): void {

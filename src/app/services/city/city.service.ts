@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {filter, Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {City} from "../../interfaces/city";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
@@ -17,17 +17,17 @@ export class CityService {
   }
 
   getCities(cityName: string): Observable<City[]> {
-    let cityAPI: string = `${environment.cityAPI}?q=${cityName}&limit=1&units=metric&appid=${environment.apiKey}`;
-    return this.http.get<City[]>(cityAPI).pipe(
-      filter((cities: City[]): boolean => {
-        if (cities.length === 0) {
-          this.matSnackBar.open(`City ${cityName} not found`, 'Close', {
-            duration: 3000,
-          });
-        }
-        return cities.length > 0;
-      })
-    )
+    let cityAPI: string = `${environment.cityAPI}?q=${cityName}&limit=5&units=metric&appid=${environment.apiKey}`;
+    return this.http.get<City[]>(cityAPI)
+      .pipe(
+        tap((cities: City[]): void => {
+          if (cities.length === 0) {
+            this.matSnackBar.open(`City ${cityName} not found`, 'Close', {
+              duration: 3000,
+            });
+          }
+        }),
+      )
   }
 
 }
