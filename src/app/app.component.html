@@ -35,7 +35,7 @@
     </mat-form-field>
   </div>
 
-  <mat-table *ngIf="dataSource?.data?.length" [dataSource]="dataSource" [fixedLayout]="true" class="mat-elevation-z2">
+  <mat-table *ngIf="dataSource?.data?.length" [dataSource]="dataSource" [fixedLayout]="false" class="mat-elevation-z2">
     <ng-container matColumnDef="city_name" class='first-column'>
       <mat-header-cell *matHeaderCellDef>City Name</mat-header-cell>
       <mat-cell *matCellDef='let row'> {{row?.timezone}} </mat-cell>
@@ -44,11 +44,11 @@
     <ng-container *ngFor="let column of displayedColumns.slice(1, displayedColumns.length); let i = index">
       <ng-container [matColumnDef]="column" *ngIf="timeOptionsControl.value==='hourly'">
         <mat-header-cell *matHeaderCellDef>{{column | date:"HH:mm"}}</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.hourly[i].temp | number:"1.0-0"}}°{{i}}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.hourly[i].temp | number:"1.0-0"}}°</mat-cell>
       </ng-container>
       <ng-container [matColumnDef]="column" *ngIf="timeOptionsControl.value==='daily'">
         <mat-header-cell *matHeaderCellDef>{{column | date:"EEEE"}}</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.daily[i].temp.day | number:"1.0-0"}}°{{i}}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.daily[i].temp.day | number:"1.0-0"}}°</mat-cell>
       </ng-container>
     </ng-container>
 

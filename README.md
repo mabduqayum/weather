@@ -30,17 +30,17 @@ This application allows users to search for weather forecasts either by the hour
     - The application first fetches the latitude and longitude of the city using `http://api.openweathermap.org/geo/1.0/direct?q={city name}&limit=1&appid={API key}`.
     - Then, it fetches the temperature data based on the latitude and longitude.
 
-2. **Filter Presets:** The user can switch between `hourly` and `daily` forecasts.
+2. **🎚 Filter Presets:** The user can switch between `hourly` and `daily` forecasts.
     - For `hourly` data, the API endpoint used is `https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,daily,alerts&appid={API key}`.
     - For `daily` data, the API endpoint used is `https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,hourly,alerts&appid={API key}`.
 
-3. **Dynamic Table:** A dynamic table is used to display the fetched data.
+3. **📊 Dynamic Table:** A dynamic table is used to display the fetched data.
 
-## Testing
+## 🧪 Testing
 
 Unit tests are optional but recommended for robustness.
 
-## Contributing
+## 👨‍💻 Contributing
 
 Please fork the repository and create a pull request or open an issue to propose changes and improvements.
 

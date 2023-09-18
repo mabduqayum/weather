@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --port=12243 --open",
     "build": "ng build",
+    "gh-build": "ng build --configuration=production --base-href=/weather/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
