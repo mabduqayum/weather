@@ -27,8 +27,8 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Select search mode</mat-label>
-      <mat-select [formControl]="timeOptionsControl" (valueChange)="changeTimeOption($event)" [disabled]="loading">
-        <mat-option *ngFor="let option of timeOptions" [value]="option">
+      <mat-select [formControl]="presetControl" (valueChange)="changeTimeOption($event)" [disabled]="loading">
+        <mat-option *ngFor="let option of preset" [value]="option">
           {{ option | titlecase }}
         </mat-option>
       </mat-select>
@@ -42,13 +42,13 @@
     </ng-container>
 
     <ng-container *ngFor="let column of displayedColumns.slice(1, displayedColumns.length); let i = index">
-      <ng-container [matColumnDef]="column" *ngIf="timeOptionsControl.value==='hourly'">
+      <ng-container [matColumnDef]="column" *ngIf="presetControl.value==='hourly'">
         <mat-header-cell *matHeaderCellDef>{{column | date:"HH:mm"}}</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.hourly[i].temp | number:"1.0-0"}}°</mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.hourly[i].temp | temp}}</mat-cell>
       </ng-container>
-      <ng-container [matColumnDef]="column" *ngIf="timeOptionsControl.value==='daily'">
+      <ng-container [matColumnDef]="column" *ngIf="presetControl.value==='daily'">
         <mat-header-cell *matHeaderCellDef>{{column | date:"EEEE"}}</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.daily[i].temp.day | number:"1.0-0"}}°</mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.daily[i].temp.day | temp}}</mat-cell>
       </ng-container>
     </ng-container>
 

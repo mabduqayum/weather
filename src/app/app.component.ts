@@ -3,29 +3,29 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Daily, Hourly, Weather} from "./interfaces/weather";
 import {FormControl} from "@angular/forms";
 import {City} from "./interfaces/city";
-import {filter, mergeMap, Subject, takeUntil} from "rxjs";
-import {WeatherService} from "./services/weather.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {mergeMap, Subject, takeUntil} from "rxjs";
+import {WeatherService} from "./services/weather/weather.service";
+import {CityService} from "./services/city/city.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [WeatherService],
+  providers: [WeatherService, CityService],
 })
 export class AppComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Weather> = new MatTableDataSource();
   displayedColumns: string[] = []
   citySearchControl: FormControl = new FormControl('');
   loading: boolean = true;
-  timeOptions: string[] = ['hourly', 'daily'];
-  timeOptionsControl: FormControl = new FormControl('hourly');
+  preset: string[] = ['hourly', 'daily'];
+  presetControl: FormControl = new FormControl('hourly');
   private cities: City[] = []
   private readonly destroy: Subject<void> = new Subject<void>();
 
   constructor(
     private weatherService: WeatherService,
-    private matSnackBar: MatSnackBar,
+    private cityService: CityService,
     private cdRef: ChangeDetectorRef
   ) {
   }
@@ -47,21 +47,11 @@ export class AppComponent implements OnInit, OnDestroy {
       return
     }
     this.loading = true;
-    this.weatherService.getCities(city)
+    this.cityService.getCities(city)
       .pipe(
-        filter((cities: City[]): boolean => {
-          if (cities.length === 0) {
-            this.matSnackBar.open(`City ${city} not found`, 'Close', {
-              duration: 3000,
-            });
-            this.loading = false;
-          }
-          this.cdRef.detectChanges();
-          return cities.length > 0;
-        }),
         mergeMap((cities: City[]) => {
           this.cities.push(cities[0])
-          return this.weatherService.getWeather(cities[0], this.timeOptionsControl.value)
+          return this.weatherService.getWeather(cities[0], this.presetControl.value)
         }),
         takeUntil(this.destroy)
       ).subscribe((weather: Weather): void => {
@@ -78,7 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.displayedColumns.length = 0;
     this.dataSource.data.length = 0;
-    this.weatherService.getWeathersByCities(this.cities, `${evt}`)
+    this.weatherService.getWeathers(this.cities, `${evt}`)
       .subscribe((weathers: Weather[]): void => {
         weathers.forEach((weather: Weather): void => {
           this.setWeather(weather);
@@ -88,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private setDisplayedColumns(weather: Weather): void {
     this.displayedColumns = ['city_name'];
-    if (this.timeOptionsControl.value === 'hourly') {
+    if (this.presetControl.value === 'hourly') {
       weather.hourly!.forEach((hour: Hourly): void => {
         this.displayedColumns.push(`${hour.dt * 1000}`);
       })

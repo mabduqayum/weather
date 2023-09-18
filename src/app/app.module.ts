@@ -15,10 +15,12 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { TempPipe } from './pipes/temp.pipe';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TempPipe
   ],
   imports: [
     BrowserModule,
