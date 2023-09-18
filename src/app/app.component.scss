@@ -1,0 +1,39 @@
+mat-progress-bar {
+  position: fixed;
+  top: 4rem;
+}
+
+main {
+  padding: 1rem;
+}
+
+.form-controls {
+  display: flex;
+  align-items: center;
+  column-gap: 1.5rem;
+
+  .search-city-field {
+    width: 400px;
+
+    .clear-btn {
+      cursor: pointer;
+    }
+  }
+
+  .add-city-btn {
+    margin-bottom: 1rem;
+  }
+}
+
+mat-table {
+  max-width: 1200px;
+  min-width: unset;
+
+  mat-header-row {
+    top: -1rem !important;
+  }
+
+  .first-column {
+    width: 200px;
+  }
+}
