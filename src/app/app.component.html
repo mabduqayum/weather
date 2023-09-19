@@ -50,7 +50,7 @@
         <mat-cell *matCellDef='let row'> {{row.hourly[i].temp | temp}}</mat-cell>
       </ng-container>
       <ng-container *ngIf="presetControl.value === 'daily'" [matColumnDef]='column'>
-        <mat-header-cell *matHeaderCellDef>{{column | date:"EEEE"}}</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>{{column | date:"EEE"}}</mat-header-cell>
         <mat-cell *matCellDef='let row'> {{row.daily[i].temp.day | temp}}</mat-cell>
       </ng-container>
     </ng-container>
