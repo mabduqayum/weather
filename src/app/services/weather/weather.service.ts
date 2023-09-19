@@ -20,7 +20,7 @@ export class WeatherService {
       if (preset === 'hourly') {
         weather.hourly = weather.hourly!.filter((_, i: number) => i < 24 && i % 3 === 0);
       } else {
-        weather.daily = weather.daily!.filter((_, i: number) => i < 7);
+        weather.daily = weather.daily!.slice(0, 7);
       }
       return of(weather);
     }));
