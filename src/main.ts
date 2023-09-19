@@ -10,18 +10,30 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
-import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-
+import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 
 bootstrapApplication(AppComponent, {
-    providers: [
-        importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule, MatToolbarModule, MatSnackBarModule, MatProgressBarModule, MatFormFieldModule, MatIconModule, MatSelectModule, MatTableModule, MatButtonModule, MatInputModule, MatAutocompleteModule),
-        provideAnimations(),
-        provideHttpClient(withInterceptorsFromDi())
-    ]
-})
-  .catch(err => console.error(err));
+  providers: [
+    importProvidersFrom(
+      BrowserModule,
+      AppRoutingModule,
+      ReactiveFormsModule,
+      MatToolbarModule,
+      MatSnackBarModule,
+      MatProgressBarModule,
+      MatFormFieldModule,
+      MatIconModule,
+      MatSelectModule,
+      MatTableModule,
+      MatButtonModule,
+      MatInputModule,
+      MatAutocompleteModule,
+    ),
+    provideAnimations(),
+    provideHttpClient(withInterceptorsFromDi()),
+  ],
+}).catch((err) => console.error(err));

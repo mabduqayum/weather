@@ -1,43 +1,54 @@
-<mat-toolbar color='primary'>
+<mat-toolbar color="primary">
   <span>Weather</span>
 </mat-toolbar>
 
-<mat-progress-bar *ngIf='loading' color='accent' mode='indeterminate' />
+<mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate" />
 
 <main>
-  <div class='form-controls'>
+  <div class="form-controls">
     <search-city (addCity)="onAddCity($event)" />
 
-    <mat-form-field appearance='fill'>
+    <mat-form-field appearance="fill">
       <mat-label>Select search mode</mat-label>
-      <mat-select (valueChange)='changePresetOption($event)' [disabled]='loading' [formControl]='presetControl'>
-        <mat-option *ngFor='let option of preset' [value]='option'>
+      <mat-select
+        (valueChange)="changePresetOption($event)"
+        [disabled]="loading"
+        [formControl]="presetControl"
+      >
+        <mat-option *ngFor="let option of preset" [value]="option">
           {{ option | titlecase }}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
-  <mat-table *ngIf='dataSource?.data?.length' [dataSource]='dataSource' [fixedLayout]='false' class='mat-elevation-z2'>
-    <ng-container class='first-column' matColumnDef='city_name'>
+  <mat-table
+    *ngIf="dataSource?.data?.length"
+    [dataSource]="dataSource"
+    [fixedLayout]="false"
+    class="mat-elevation-z2"
+  >
+    <ng-container class="first-column" matColumnDef="city_name">
       <mat-header-cell *matHeaderCellDef>City Name</mat-header-cell>
-      <mat-cell *matCellDef='let row'> {{row?.timezone}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row?.timezone }} </mat-cell>
     </ng-container>
 
-    <ng-container *ngFor='let column of displayedColumns.slice(1, displayedColumns.length); let i = index'>
-      <ng-container *ngIf="presetControl.value === 'hourly'" [matColumnDef]='column'>
-        <mat-header-cell *matHeaderCellDef>{{column | date:"HH:mm"}}</mat-header-cell>
-        <mat-cell *matCellDef='let row'> {{row.hourly[i].temp | temp}}</mat-cell>
+    <ng-container
+      *ngFor="let column of displayedColumns.slice(1, displayedColumns.length); let i = index"
+    >
+      <ng-container *ngIf="presetControl.value === 'hourly'" [matColumnDef]="column">
+        <mat-header-cell *matHeaderCellDef>{{ column | date: 'HH:mm' }}</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.hourly[i].temp | temp }}</mat-cell>
       </ng-container>
-      <ng-container *ngIf="presetControl.value === 'daily'" [matColumnDef]='column'>
-        <mat-header-cell *matHeaderCellDef>{{column | date:"EEE"}}</mat-header-cell>
-        <mat-cell *matCellDef='let row'> {{row.daily[i].temp.day | temp}}</mat-cell>
+      <ng-container *ngIf="presetControl.value === 'daily'" [matColumnDef]="column">
+        <mat-header-cell *matHeaderCellDef>{{ column | date: 'EEE' }}</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.daily[i].temp.day | temp }}</mat-cell>
       </ng-container>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef='displayedColumns; sticky: true'/>
-    <mat-row *matRowDef='let row; columns: displayedColumns'/>
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" />
+    <mat-row *matRowDef="let row; columns: displayedColumns" />
   </mat-table>
 </main>
 
-<router-outlet/>
+<router-outlet />

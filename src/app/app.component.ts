@@ -1,19 +1,19 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {Daily, Hourly, Weather} from './interfaces/weather';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {City} from './interfaces/city';
-import {Subject, takeUntil} from 'rxjs';
-import {WeatherService} from './services/weather/weather.service';
-import {TempPipe} from './pipes/temp/temp.pipe';
-import {RouterOutlet} from '@angular/router';
-import {MatOptionModule} from '@angular/material/core';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {SearchCityComponent} from './components/search-city/search-city.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {NgIf, NgFor, TitleCasePipe, DatePipe} from '@angular/common';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Daily, Hourly, Weather } from './interfaces/weather';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { City } from './interfaces/city';
+import { Subject, takeUntil } from 'rxjs';
+import { WeatherService } from './services/weather/weather.service';
+import { TempPipe } from './pipes/temp/temp.pipe';
+import { RouterOutlet } from '@angular/router';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { SearchCityComponent } from './components/search-city/search-city.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DatePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +21,22 @@ import {MatToolbarModule} from '@angular/material/toolbar';
   styleUrls: ['./app.component.scss'],
   providers: [WeatherService],
   standalone: true,
-  imports: [MatToolbarModule, NgIf, MatProgressBarModule, SearchCityComponent, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, NgFor, MatOptionModule, MatTableModule, RouterOutlet, TitleCasePipe, DatePipe, TempPipe]
+  imports: [
+    MatToolbarModule,
+    NgIf,
+    MatProgressBarModule,
+    SearchCityComponent,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    NgFor,
+    MatOptionModule,
+    MatTableModule,
+    RouterOutlet,
+    TitleCasePipe,
+    DatePipe,
+    TempPipe,
+  ],
 })
 export class AppComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Weather> = new MatTableDataSource();
@@ -34,9 +49,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private weatherService: WeatherService,
-    private cdRef: ChangeDetectorRef
-  ) {
-  }
+    private cdRef: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.loading = false;
@@ -50,22 +64,20 @@ export class AppComponent implements OnInit, OnDestroy {
   onAddCity(city: City) {
     this.loading = true;
     this.cities.push(city);
-    this.weatherService.getWeather(city, this.presetControl.value)
-      .pipe(
-        takeUntil(this.destroy)
-      )
+    this.weatherService
+      .getWeather(city, this.presetControl.value)
+      .pipe(takeUntil(this.destroy))
       .subscribe((weather: Weather): void => {
-          this.setWeather(weather);
-        }
-      );
+        this.setWeather(weather);
+      });
   }
-
 
   changePresetOption(evt: Event): void {
     this.loading = true;
     this.displayedColumns.length = 0;
     this.dataSource.data.length = 0;
-    this.weatherService.getWeathers(this.cities, `${evt}`)
+    this.weatherService
+      .getWeathers(this.cities, `${evt}`)
       .subscribe((weathers: Weather[]): void => {
         weathers.forEach((weather: Weather): void => {
           this.setWeather(weather);

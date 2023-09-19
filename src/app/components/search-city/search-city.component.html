@@ -1,23 +1,18 @@
-<mat-form-field class='search-city-field'>
+<mat-form-field class="search-city-field">
   <mat-label>Search City</mat-label>
-  <input
-    [disabled]='loading'
-    [formControl]='citySearchControl'
-    [matAutocomplete]='auto'
-    matInput
-  />
+  <input [disabled]="loading" [formControl]="citySearchControl" [matAutocomplete]="auto" matInput />
   <mat-icon
-    (click)='resetSearchControl()'
-    *ngIf='citySearchControl.value'
-    class='clear-btn'
+    (click)="resetSearchControl()"
+    *ngIf="citySearchControl.value"
+    class="clear-btn"
     matSuffix
-  >close
+    >close
   </mat-icon>
-  <mat-autocomplete #auto='matAutocomplete' (optionSelected)='selectCity()' autoActiveFirstOption>
-    <mat-option *ngFor='let city of searchCityOptions' [value]='city.name'>
-      {{city.name}} / {{city.country}}
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectCity()" autoActiveFirstOption>
+    <mat-option *ngFor="let city of searchCityOptions" [value]="city.name">
+      {{ city.name }} / {{ city.country }}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
 
-<mat-progress-bar *ngIf='loading' color='accent' mode='indeterminate' />
+<mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate" />

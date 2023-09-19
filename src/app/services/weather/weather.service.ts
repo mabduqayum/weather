@@ -9,27 +9,33 @@ import { City } from '../../interfaces/city';
 export class WeatherService {
   private readonly timeOptions: string[] = ['current', 'minutely', 'hourly', 'daily'];
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getWeather(city: City, preset: string): Observable<Weather> {
-    const excludeOptions: string = this.timeOptions.filter((option: string) => option != preset).join(',');
-    return this.http.get<Weather>(
-      `${environment.weatherAPI}?lat=${city.lat}&lon=${city.lon}&exclude=${excludeOptions},alerts&units=metric&appid=${environment.apiKey}`
-    ).pipe(mergeMap((weather: Weather) => {
-      if (preset === 'hourly') {
-        weather.hourly = weather.hourly!.filter((_, i: number) => i < 24 && i % 3 === 0);
-      } else {
-        weather.daily = weather.daily!.slice(0, 7);
-      }
-      return of(weather);
-    }));
+    const excludeOptions: string = this.timeOptions
+      .filter((option: string) => option != preset)
+      .join(',');
+    return this.http
+      .get<Weather>(
+        `${environment.weatherAPI}?lat=${city.lat}&lon=${city.lon}&exclude=${excludeOptions},alerts&units=metric&appid=${environment.apiKey}`,
+      )
+      .pipe(
+        mergeMap((weather: Weather) => {
+          if (preset === 'hourly') {
+            weather.hourly = weather.hourly!.filter((_, i: number) => i < 24 && i % 3 === 0);
+          } else {
+            weather.daily = weather.daily!.slice(0, 7);
+          }
+          return of(weather);
+        }),
+      );
   }
 
   getWeathers(cities: City[], preset: string): Observable<Weather[]> {
-    return forkJoin(cities.map((city: City) => {
+    return forkJoin(
+      cities.map((city: City) => {
         return this.getWeather(city, preset);
-      }
-    ));
+      }),
+    );
   }
 }

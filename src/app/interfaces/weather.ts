@@ -1,66 +1,65 @@
 export interface Weather {
-  hourly?: Hourly[],
-  daily?: Daily[],
-  lat: number,
-  lon: number,
-  timezone: string,
-  timezone_offset: number,
+  hourly?: Hourly[];
+  daily?: Daily[];
+  lat: number;
+  lon: number;
+  timezone: string;
+  timezone_offset: number;
 }
 
 export interface Hourly {
-  clouds: number,
-  dew_point: number,
-  dt: number,
-  feels_like: number,
-  humidity: number,
-  pop: number,
-  pressure: number,
-  temp: number,
-  uvi: number,
-  visibility: number,
-  weather: Desc,
-  wind_deg: number,
-  wind_gust: number,
-  wind_speed: number,
+  clouds: number;
+  dew_point: number;
+  dt: number;
+  feels_like: number;
+  humidity: number;
+  pop: number;
+  pressure: number;
+  temp: number;
+  uvi: number;
+  visibility: number;
+  weather: Desc;
+  wind_deg: number;
+  wind_gust: number;
+  wind_speed: number;
 }
 
 export interface Desc {
-  description: string,
-  icon: string,
-  id: number,
-  main: string,
+  description: string;
+  icon: string;
+  id: number;
+  main: string;
 }
 
 export interface Daily {
-  dt: number,
-  sunrise: number,
-  sunset: number,
-  moonrise: number,
-  moonset: number,
-  moon_phase: number,
-  temp: Temp,
-  feels_like: object,
-  pressure: number,
-  humidity: number,
-  dew_point: number,
-  wind_speed: number,
-  wind_deg: number,
-  wind_gust: number,
-  weather: object,
-  clouds: number,
-  pop: number,
-  uvi: number,
+  dt: number;
+  sunrise: number;
+  sunset: number;
+  moonrise: number;
+  moonset: number;
+  moon_phase: number;
+  temp: Temp;
+  feels_like: object;
+  pressure: number;
+  humidity: number;
+  dew_point: number;
+  wind_speed: number;
+  wind_deg: number;
+  wind_gust: number;
+  weather: object;
+  clouds: number;
+  pop: number;
+  uvi: number;
 }
 
 export interface Temp {
-  day: number,
-  eve: number,
-  max: number,
-  min: number,
-  morn: number,
-  night: number,
+  day: number;
+  eve: number;
+  max: number;
+  min: number;
+  morn: number;
+  night: number;
 }
-
 
 // {
 //   "lat": 38.5426,
