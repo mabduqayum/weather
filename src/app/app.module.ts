@@ -17,11 +17,13 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { TempPipe } from './pipes/temp.pipe';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { SearchCityComponent } from './components/search-city/search-city.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TempPipe
+    TempPipe,
+    SearchCityComponent
   ],
   imports: [
     BrowserModule,
