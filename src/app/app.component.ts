@@ -1,16 +1,27 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {Daily, Hourly, Weather} from './interfaces/weather';
-import {FormControl} from '@angular/forms';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {City} from './interfaces/city';
 import {Subject, takeUntil} from 'rxjs';
 import {WeatherService} from './services/weather/weather.service';
+import {TempPipe} from './pipes/temp/temp.pipe';
+import {RouterOutlet} from '@angular/router';
+import {MatOptionModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {SearchCityComponent} from './components/search-city/search-city.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {NgIf, NgFor, TitleCasePipe, DatePipe} from '@angular/common';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [WeatherService]
+  providers: [WeatherService],
+  standalone: true,
+  imports: [MatToolbarModule, NgIf, MatProgressBarModule, SearchCityComponent, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, NgFor, MatOptionModule, MatTableModule, RouterOutlet, TitleCasePipe, DatePipe, TempPipe]
 })
 export class AppComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Weather> = new MatTableDataSource();
