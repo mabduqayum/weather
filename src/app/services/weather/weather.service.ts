@@ -7,17 +7,24 @@ import { City } from '../../interfaces/city';
 
 @Injectable()
 export class WeatherService {
-  private readonly timeOptions: string[] = ['current', 'minutely', 'hourly', 'daily'];
+  // private cache: Map<string, Weather> = new Map();
+  private readonly presets: string[] = ['current', 'minutely', 'hourly', 'daily'];
 
   constructor(private http: HttpClient) {}
 
   getWeather(city: City, preset: string): Observable<Weather> {
-    const excludeOptions: string = this.timeOptions
+    const cacheKey = `${city.lat}-${city.lon}-${preset}`;
+    // const cachedWeather = this.cache.get(cacheKey);
+    // if (cachedWeather) {
+    //   return of(cachedWeather);
+    // }
+
+    const excludedPresets: string = this.presets
       .filter((option: string) => option != preset)
       .join(',');
     return this.http
       .get<Weather>(
-        `${environment.weatherAPI}?lat=${city.lat}&lon=${city.lon}&exclude=${excludeOptions},alerts&units=metric&appid=${environment.apiKey}`,
+        `${environment.weatherAPI}?lat=${city.lat}&lon=${city.lon}&exclude=${excludedPresets},alerts&units=metric&appid=${environment.apiKey}`,
       )
       .pipe(
         mergeMap((weather: Weather) => {
@@ -26,6 +33,7 @@ export class WeatherService {
           } else {
             weather.daily = weather.daily!.slice(0, 7);
           }
+          // this.cache.set(cacheKey, weather);
           return of(weather);
         }),
       );

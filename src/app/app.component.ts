@@ -72,12 +72,12 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
 
-  changePresetOption(evt: Event): void {
+  changePresetOption($event: Event): void {
     this.loading = true;
     this.displayedColumns.length = 0;
     this.dataSource.data.length = 0;
     this.weatherService
-      .getWeathers(this.cities, `${evt}`)
+      .getWeathers(this.cities, `${$event}`)
       .subscribe((weathers: Weather[]): void => {
         weathers.forEach((weather: Weather): void => {
           this.setWeather(weather);
@@ -96,7 +96,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.displayedColumns.push(`${day.dt * 1000}`);
       });
     }
-    this.cdRef.detectChanges();
   }
 
   private setWeather(weather: Weather): void {
