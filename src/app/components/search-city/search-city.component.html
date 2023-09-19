@@ -1,6 +1,6 @@
 <mat-form-field class="search-city-field">
   <mat-label>Search City</mat-label>
-  <input [disabled]="loading" [formControl]="citySearchControl" [matAutocomplete]="auto" matInput />
+  <input #cityInput [disabled]="loading" [formControl]="citySearchControl" [matAutocomplete]="auto" matInput />
   <mat-icon
     (click)="resetSearchControl()"
     *ngIf="citySearchControl.value"
