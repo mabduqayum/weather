@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.loading = false;
           return cities.length > 0;
         }),
-        map((cities: City[]) => cities.filter((city: City) => (!!city?.local_names?.en))),
+        map((cities: City[]) => cities.filter((city: City) => (city?.name))),
         takeUntil(this.destroy),
       )
       .subscribe((cities: City[]): void => {

@@ -21,8 +21,8 @@
         class="clear-btn"
       >close</mat-icon>
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addCity()">
-        <mat-option *ngFor="let city of searchCityOptions" [value]="city.local_names.en">
-          {{city.local_names.en}} / {{city.country}}
+        <mat-option *ngFor="let city of searchCityOptions" [value]="city.name">
+          {{city.name}} / {{city.country}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

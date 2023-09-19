@@ -8,5 +8,6 @@ export interface City {
 }
 
 export interface LocalNames {
+  ascii: string,
   en: string,
 }
