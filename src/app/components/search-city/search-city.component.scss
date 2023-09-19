@@ -1,0 +1,16 @@
+:host {
+  position: relative;
+}
+
+.search-city-field {
+  width: 400px;
+
+  .clear-btn {
+    cursor: pointer;
+  }
+}
+
+mat-progress-bar {
+  position: absolute;
+  top: 3.2rem;
+}

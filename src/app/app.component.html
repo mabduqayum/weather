@@ -6,31 +6,11 @@
 
 <main>
   <div class='form-controls'>
-    <mat-form-field class='search-city-field'>
-      <mat-label>Search City</mat-label>
-      <input
-        [disabled]='loading'
-        [formControl]='citySearchControl'
-        [matAutocomplete]='auto'
-        matInput
-      />
-      <mat-icon
-        (click)='clearCitySearchControl()'
-        *ngIf='citySearchControl.value'
-        class='clear-btn'
-        matSuffix
-      >close
-      </mat-icon>
-      <mat-autocomplete #auto='matAutocomplete' (optionSelected)='addCity()' autoActiveFirstOption>
-        <mat-option *ngFor='let city of searchCityOptions' [value]='city.name'>
-          {{city.name}} / {{city.country}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+    <search-city (addCity)="onAddCity($event)" />
 
     <mat-form-field appearance='fill'>
       <mat-label>Select search mode</mat-label>
-      <mat-select (valueChange)='changeTimeOption($event)' [disabled]='loading' [formControl]='presetControl'>
+      <mat-select (valueChange)='changePresetOption($event)' [disabled]='loading' [formControl]='presetControl'>
         <mat-option *ngFor='let option of preset' [value]='option'>
           {{ option | titlecase }}
         </mat-option>
@@ -55,9 +35,9 @@
       </ng-container>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef='displayedColumns; sticky: true' />
-    <mat-row *matRowDef='let row; columns: displayedColumns' />
+    <mat-header-row *matHeaderRowDef='displayedColumns; sticky: true'/>
+    <mat-row *matRowDef='let row; columns: displayedColumns'/>
   </mat-table>
 </main>
 
-<router-outlet />
+<router-outlet/>
