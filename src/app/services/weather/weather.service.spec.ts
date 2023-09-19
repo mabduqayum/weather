@@ -1,8 +1,8 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {WeatherService} from "./weather.service";
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {City} from "../../interfaces/city";
+import { WeatherService } from './weather.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { City } from '../../interfaces/city';
 
 
 describe('WeatherService', () => {
@@ -19,8 +19,8 @@ describe('WeatherService', () => {
   });
 
   it('should fetch weather data for a single city', () => {
-    const mockCity = {lat: 40.7128, lon: -74.0060} as City;
-    const mockResponse = {hourly: Array.from({length: 48}, (_, i) => i)};
+    const mockCity = { lat: 40.7128, lon: -74.0060 } as City;
+    const mockResponse = { hourly: Array.from({ length: 48 }, (_, i) => i) };
 
     service.getWeather(mockCity, 'hourly').subscribe(weather => {
       // Check if hourly data is filtered correctly.
@@ -36,8 +36,8 @@ describe('WeatherService', () => {
 
   it('should fetch weather data for multiple cities', () => {
     const mockCities = [
-      {lat: 40.7128, lon: -74.0060},
-      {lat: 34.0522, lon: -118.2437}
+      { lat: 40.7128, lon: -74.0060 },
+      { lat: 34.0522, lon: -118.2437 }
     ] as City[];
     const mockResponses = [{}, {}];
 

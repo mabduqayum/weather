@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Observable, tap} from "rxjs";
-import {City} from "../../interfaces/city";
-import {environment} from "../../../environments/environment";
-import {HttpClient} from "@angular/common/http";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import { Injectable } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+import { City } from '../../interfaces/city';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class CityService {
 
   constructor(
     private http: HttpClient,
-    private matSnackBar: MatSnackBar,
+    private matSnackBar: MatSnackBar
   ) {
   }
 
@@ -23,11 +23,11 @@ export class CityService {
         tap((cities: City[]): void => {
           if (cities.length === 0) {
             this.matSnackBar.open(`City ${cityName} not found`, 'Close', {
-              duration: 3000,
+              duration: 3000
             });
           }
-        }),
-      )
+        })
+      );
   }
 
 }

@@ -2,61 +2,62 @@
   <span>Weather</span>
 </mat-toolbar>
 
-<mat-progress-bar *ngIf='loading' color='accent' mode='indeterminate'/>
+<mat-progress-bar *ngIf='loading' color='accent' mode='indeterminate' />
 
 <main>
-  <div class="form-controls">
-    <mat-form-field class="search-city-field">
+  <div class='form-controls'>
+    <mat-form-field class='search-city-field'>
       <mat-label>Search City</mat-label>
       <input
-        matInput
-        [disabled]="loading"
+        [disabled]='loading'
         [formControl]='citySearchControl'
-        [matAutocomplete]="auto"
+        [matAutocomplete]='auto'
+        matInput
       />
       <mat-icon
-        *ngIf="citySearchControl.value"
+        (click)='clearCitySearchControl()'
+        *ngIf='citySearchControl.value'
+        class='clear-btn'
         matSuffix
-        (click)="clearCitySearchControl()"
-        class="clear-btn"
-      >close</mat-icon>
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addCity()">
-        <mat-option *ngFor="let city of searchCityOptions" [value]="city.name">
+      >close
+      </mat-icon>
+      <mat-autocomplete #auto='matAutocomplete' (optionSelected)='addCity()' autoActiveFirstOption>
+        <mat-option *ngFor='let city of searchCityOptions' [value]='city.name'>
           {{city.name}} / {{city.country}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance='fill'>
       <mat-label>Select search mode</mat-label>
-      <mat-select [formControl]="presetControl" (valueChange)="changeTimeOption($event)" [disabled]="loading">
-        <mat-option *ngFor="let option of preset" [value]="option">
+      <mat-select (valueChange)='changeTimeOption($event)' [disabled]='loading' [formControl]='presetControl'>
+        <mat-option *ngFor='let option of preset' [value]='option'>
           {{ option | titlecase }}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
-  <mat-table *ngIf="dataSource?.data?.length" [dataSource]="dataSource" [fixedLayout]="false" class="mat-elevation-z2">
-    <ng-container matColumnDef="city_name" class='first-column'>
+  <mat-table *ngIf='dataSource?.data?.length' [dataSource]='dataSource' [fixedLayout]='false' class='mat-elevation-z2'>
+    <ng-container class='first-column' matColumnDef='city_name'>
       <mat-header-cell *matHeaderCellDef>City Name</mat-header-cell>
       <mat-cell *matCellDef='let row'> {{row?.timezone}} </mat-cell>
     </ng-container>
 
-    <ng-container *ngFor="let column of displayedColumns.slice(1, displayedColumns.length); let i = index">
-      <ng-container [matColumnDef]="column" *ngIf="presetControl.value === 'hourly'">
+    <ng-container *ngFor='let column of displayedColumns.slice(1, displayedColumns.length); let i = index'>
+      <ng-container *ngIf="presetControl.value === 'hourly'" [matColumnDef]='column'>
         <mat-header-cell *matHeaderCellDef>{{column | date:"HH:mm"}}</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.hourly[i].temp | temp}}</mat-cell>
+        <mat-cell *matCellDef='let row'> {{row.hourly[i].temp | temp}}</mat-cell>
       </ng-container>
-      <ng-container [matColumnDef]="column" *ngIf="presetControl.value === 'daily'">
+      <ng-container *ngIf="presetControl.value === 'daily'" [matColumnDef]='column'>
         <mat-header-cell *matHeaderCellDef>{{column | date:"EEEE"}}</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.daily[i].temp.day | temp}}</mat-cell>
+        <mat-cell *matCellDef='let row'> {{row.daily[i].temp.day | temp}}</mat-cell>
       </ng-container>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef='displayedColumns; sticky: true'/>
-    <mat-row *matRowDef='let row; columns: displayedColumns'/>
+    <mat-header-row *matHeaderRowDef='displayedColumns; sticky: true' />
+    <mat-row *matRowDef='let row; columns: displayedColumns' />
   </mat-table>
 </main>
 
-<router-outlet/>
+<router-outlet />
