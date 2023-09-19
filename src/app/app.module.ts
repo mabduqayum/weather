@@ -15,7 +15,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { TempPipe } from './pipes/temp.pipe';
+import { TempPipe } from './pipes/temp/temp.pipe';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { SearchCityComponent } from './components/search-city/search-city.component';
 
