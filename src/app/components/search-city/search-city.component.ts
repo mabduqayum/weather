@@ -17,6 +17,7 @@ import {
   mergeMap,
   Subject,
   takeUntil,
+  takeWhile,
   tap,
 } from 'rxjs';
 import { CityService } from '../../services/city/city.service';
@@ -131,11 +132,13 @@ export class SearchCityComponent implements OnInit, OnDestroy {
   }
 
   private initQueryParams(): void {
-    this.route.queryParams.subscribe((params) => {
-      const city = params['city'];
-      if (city) {
-        this.citySearchControl.setValue(city);
-      }
-    });
+    this.route.queryParams
+      .pipe(takeWhile(() => this.citySearchControl.value === ''))
+      .subscribe((params) => {
+        const city = params['city'];
+        if (city) {
+          this.citySearchControl.setValue(city);
+        }
+      });
   }
 }
