@@ -16,6 +16,7 @@ import {
   map,
   mergeMap,
   Subject,
+  take,
   takeUntil,
   tap,
 } from 'rxjs';
@@ -131,7 +132,9 @@ export class SearchCityComponent implements OnInit, OnDestroy {
   }
 
   private initQueryParams(): void {
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams
+      .pipe(take(1))
+      .subscribe((params) => {
       const city = params['city'];
       if (city) {
         this.citySearchControl.setValue(city);
