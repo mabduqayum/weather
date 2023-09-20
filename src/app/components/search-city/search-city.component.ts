@@ -58,8 +58,8 @@ export class SearchCityComponent implements OnInit, OnDestroy {
 
   constructor(
     private cityService: CityService,
-    private router: Router,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -85,7 +85,7 @@ export class SearchCityComponent implements OnInit, OnDestroy {
     this.resetSearchControl();
   }
 
-  async updateURL(cityName: string) {
+  private async updateURL(cityName: string) {
     if (cityName) {
       await this.router.navigate([], {
         queryParams: { city: cityName },

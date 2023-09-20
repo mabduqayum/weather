@@ -3,10 +3,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Daily, Hourly, Weather } from './interfaces/weather';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { City } from './interfaces/city';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { WeatherService } from './services/weather/weather.service';
 import { TempPipe } from './pipes/temp/temp.pipe';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -48,12 +48,15 @@ export class AppComponent implements OnInit, OnDestroy {
   private readonly destroy: Subject<void> = new Subject<void>();
 
   constructor(
-    private weatherService: WeatherService,
     private cdRef: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private router: Router,
+    private weatherService: WeatherService,
   ) {}
 
   ngOnInit(): void {
     this.loading = false;
+    this.initQueryParams();
   }
 
   ngOnDestroy(): void {
@@ -72,17 +75,27 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
 
-  changePresetOption($event: Event): void {
-    this.loading = true;
+  async changePresetOption($event: string) {
     this.displayedColumns.length = 0;
     this.dataSource.data.length = 0;
+    await this.updateURL($event);
     this.weatherService
       .getWeathers(this.cities, `${$event}`)
+      .pipe(tap(() => (this.loading = false)))
       .subscribe((weathers: Weather[]): void => {
         weathers.forEach((weather: Weather): void => {
           this.setWeather(weather);
         });
       });
+  }
+
+  private initQueryParams() {
+    this.route.queryParams.subscribe((params) => {
+      const preset = params['preset'];
+      if (preset) {
+        this.presetControl.setValue(preset);
+      }
+    });
   }
 
   private setDisplayedColumns(weather: Weather): void {
@@ -103,5 +116,20 @@ export class AppComponent implements OnInit, OnDestroy {
     this.dataSource.data = [...this.dataSource.data, weather];
     this.loading = false;
     this.cdRef.detectChanges();
+  }
+
+  private async updateURL(cityName: string) {
+    if (cityName) {
+      await this.router.navigate([], {
+        queryParams: { preset: cityName },
+        queryParamsHandling: 'merge',
+      });
+    } else {
+      const queryParams = { ...this.route.snapshot.queryParams };
+      delete queryParams['preset'];
+      await this.router.navigate([], {
+        queryParams: queryParams,
+      });
+    }
   }
 }
