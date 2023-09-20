@@ -3,7 +3,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Daily, Hourly, Weather } from './interfaces/weather';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { City } from './interfaces/city';
-import { Subject, take, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { WeatherService } from './services/weather/weather.service';
 import { TempPipe } from './pipes/temp/temp.pipe';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -90,9 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private initQueryParams() {
-    this.route.queryParams
-      .pipe(take(1))
-      .subscribe((params) => {
+    this.route.queryParams.subscribe((params) => {
       const preset = params['preset'];
       if (preset) {
         this.presetControl.setValue(preset);
